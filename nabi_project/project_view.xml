@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="nabi_view_bank_statement_form_inherit" model="ir.ui.view">
+            <field name="name">Nabi bank statement line</field>
+            <field name="model">account.bank.statement</field>
+            <field name="mode">extension</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form2"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree[@string='Statement lines']/field[@name='name']" position="after">
+                    <field name="account_id"/>
+                    <field name="analytic_account_id"/>
+                    <field name="ab"/>
+
+                </xpath>
+            </field>
+        </record>
+        <record id="nabi_view_project_caution_tree" model="ir.ui.view">
+            <field name="name">Nabi project caution bancaire</field>
+            <field name="model">project.caution</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="nature"/> 
+                    <field name="beneficiaire"/>
+                    <field name="project"/>
+                    <field name="montant"/>                  
+                    <field name="date"/>
+                    <field name="echeance"/>                   
+                    <field name="date_mainlevee"/>
+                </tree>
+            </field>
+        </record>
+        <record id="nabi_view_project_caution_form" model="ir.ui.view">
+            <field name="name">Nabi project caution bancaire</field>
+            <field name="model">project.caution</field>
+            <field name="arch" type="xml">
+
+                <form>
+                    <sheet>
+                        <group col="2">
+
+                            <h2>
+                                <label for="name"/>
+                                <field name="name"/>
+                            </h2>
+                        </group>
+                        <group>
+                            <group>
+                                <field name="date"/>
+                                <field name="echeance"/>
+                                <field name="date_mainlevee"/>           
+                            </group>
+                            <group>             
+                                <field name="nature"/>
+                                <field name="beneficiaire"/>
+                                <field name="project"/>                      
+                                <field name="montant"/>
+
+                            </group>
+                        </group>               
+
+                    </sheet>
+                </form>
+
+
+
+            </field>
+        </record>
+        <record id="nabi_view_project_caution_graph" model="ir.ui.view">
+            <field name="name">Nabi project caution bancaire</field>
+            <field name="model">project.caution</field>
+            <field name="arch" type="xml">
+                <graph type="pivot">
+
+
+                    <field name="date"/>
+                    <field name="nature" type="row"/>
+
+                    <field name="beneficiaire" type="row"/>
+                    <field name="project" type="row"/>
+                    <field name="echeance" type="col"/>
+                    <field name="montant" type="measure"/> 
+
+                </graph>
+            </field>
+        </record>
+        <record id="nabi_action_project_caution" model="ir.actions.act_window">
+            <field name="name">Cautions bancaires</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.caution</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,graph</field>
+
+        </record>
+
+
+        <!-- menuitem name="Modeles" id="menu_modele" sequence="10"/ -->
+        
+        <menuitem name="Cautions bancaires" id="nabi_menu_caution_caution" parent="account.menu_finance_bank_and_cash" action="nabi_action_project_caution" sequence="5"/>
+       
+        <record id="nabi_view_rapport_prod_tree" model="ir.ui.view">
+            <field name="name">Rapport de production</field>
+            <field name="model">project.rapport</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="project"/> 
+                    <field name="lot" domain="[('project','=',project)]" options="{'no_create':True}"/>
+                    <field name="date"/>
+                                       
+                    <field name="address"/>
+                    <field name="total_amount"/>
+                    <field name="total_amount_stt"/>
+                </tree>
+            </field>
+        </record>
+        <record id="nabi_view_rapport_prod_prod_tree" model="ir.ui.view">
+            <field name="name">Rapport de production - prod</field>
+            <field name="model">project.rapport.prod</field>
+            <field name="arch" type="xml">
+                <tree editable="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="name" required="1"/>
+                    
+                    <field name="qte" required="1"/>
+                    <field name="parent" invisible="1"/>
+                                       
+                    
+                </tree>
+            </field>
+        </record>
+        <record id="nabi_view_rapport_prod_stt_tree" model="ir.ui.view">
+            <field name="name">Rapport de production - stt</field>
+            <field name="model">project.rapport.stt</field>
+            <field name="arch" type="xml">
+                <tree editable="1">
+                    <field name="sequence" widget="handle"/>
+                    <field name="soutraitant" required="1"/>
+                    <field name="name" domain="[('parent.soutraitant','=',soutraitant),('parent.project','=',parent.project)]" required="1"/>
+                    <field name="qte" required="1"/>
+                    <field name="parent" invisible="1"/>
+                                       
+                    
+                </tree>
+            </field>
+        </record>
+        <record id="nabi_view_rapport_prod_parc_tree" model="ir.ui.view">
+            <field name="name">Rapport de production - parc</field>
+            <field name="model">project.rapport.parc</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name" required="1"/>
+                    
+                    <field name="qte" required="1"/>
+                    <field name="parent" invisible="1"/>
+                                       
+                    
+                </tree>
+            </field>
+        </record>
+        <record id="nabi_view_rapport_prod_hr_tree" model="ir.ui.view">
+            <field name="name">Rapport de production - hr</field>
+            <field name="model">project.rapport.hr</field>
+            <field name="arch" type="xml">
+                <tree editable="top">
+                    <field name="name" required="1"/>
+                    
+                    <field name="qte" required="1"/>
+                    <field name="parent" invisible="1"/>
+                                       
+                    
+                </tree>
+            </field>
+        </record>
+        <record id="nabi_view_rapport_prod_form" model="ir.ui.view">
+            <field name="name">Rapport de production</field>
+            <field name="model">project.rapport</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header><field name="state" widget="statusbar" clickable="1"/></header>
+                    <sheet>
+                        
+                        <h1>
+                            <group>
+                                <field name="name"/>    
+                            </group>
+
+                        </h1>
+                        <group>
+                            
+                            <field name="project"/> 
+                            <field name="lot"/>
+                            <field name="date"/>
+                            <field name="address"/>                                                     
+                            
+                        </group>
+                        <notebook>
+                            <page string="Production">
+                                <field name="prod"/>
+                                <field name="total_amount"/>
+                            </page>
+                            <page string="Engins et vihecules">
+                                <field name="parc"/>
+                            </page>
+                            <page string="Soutraitance">
+                                <field name="stt"/>
+                                <field name="total_amount_stt"/>
+                            </page>
+                            <page string="Ressources humaines">
+                                <field name="hr"/>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="nabi_action_rapport_prod" model="ir.actions.act_window">
+            <field name="name">Rapport journalier de Production</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">project.rapport</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+
+        </record>
+
+
+        <menuitem name="Suivi de projets" id="nabi_menu_suivi_projet" parent="base.menu_main_pm" sequence="10"/>
+        
+        <menuitem name="Rapport de production" id="nabi_menu_rapport_prod" parent="nabi_menu_suivi_projet" action="nabi_action_rapport_prod" sequence="5"/>
+       
+    </data>
+</openerp>
